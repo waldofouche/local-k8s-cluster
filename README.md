@@ -37,7 +37,7 @@ Six node cluster with 4 workers, 2 control plans in HA and a container registry
 1. Create the cluster from the cluster definition file, with correct network configuration
 
 ```shell
-kind create cluster --config cluster.yaml --name k8s-playground 
+kind create cluster --config cluster-defnition.yaml --name k8s-playground 
 ```
 
 2. Run the container registry patch shell script
@@ -59,14 +59,15 @@ alias kube-local="kubectl --context kind-k8s-playground"
 5. Once ready, deploy the nginx ingress controller
 
 ```shell
-kube-local apply -f  apache-ingress.yaml
+cd ingress
+kube-local apply -f  nginx.yaml
 ```
 
 6. Deploy the sample services and their ingress
 
 ```shell
-kube-local apply -f services.yaml \
-        -f ingress.yaml
+kube-local apply -f services/foo-bar.yaml \
+        -f ingress/foo-bar.yaml
 ```
 
 7. Test the services by navigating to `foo.hack` and `bar.hack` in your browser
@@ -94,6 +95,6 @@ docker push localhost:5001/hello-app:1.0
 4. Deploy the service from the local registry using a deployment
 
 ```shell
-kube-local apply -f deployment.yaml \
-        -f deployment-ingress.yaml
+kube-local apply -f deployments/hello-app.yaml \
+        -f ingress/helloi-app-deployment.yaml
 ```
